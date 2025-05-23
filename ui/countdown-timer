@@ -1,0 +1,102 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Clock, Calendar } from "lucide-react"
+
+interface CountdownTimerProps {
+  targetDate: number
+  isComingSoon?: boolean
+  className?: string
+  showIcon?: boolean
+}
+
+export function CountdownTimer({
+  targetDate,
+  isComingSoon = false,
+  className = "",
+  showIcon = true,
+}: CountdownTimerProps) {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    isExpired: false,
+  })
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = Date.now()
+      const difference = targetDate - now
+
+      if (difference <= 0) {
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          isExpired: true,
+        })
+        return
+      }
+
+      setTimeLeft({
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        isExpired: false,
+      })
+    }
+
+    calculateTimeLeft()
+    const timer = setInterval(calculateTimeLeft, 1000)
+
+    return () => clearInterval(timer)
+  }, [targetDate])
+
+  if (timeLeft.isExpired) {
+    return (
+      <div className={`flex items-center gap-2 text-red-400 ${className}`}>
+        {showIcon && <Clock className="h-4 w-4" />}
+        <span className="text-sm font-medium">Expired</span>
+      </div>
+    )
+  }
+
+  const formatTime = (value: number) => value.toString().padStart(2, "0")
+
+  return (
+    <div className={`flex items-center gap-2 ${className}`}>
+      {showIcon && (
+        <div className="relative">
+          {isComingSoon ? (
+            <Calendar className="h-4 w-4 text-indigo-400" />
+          ) : (
+            <Clock className="h-4 w-4 text-orange-400 animate-pulse" />
+          )}
+        </div>
+      )}
+
+      <div className="flex items-center gap-1 text-sm font-mono">
+        {timeLeft.days > 0 && (
+          <>
+            <span className="bg-elegant-800/50 px-2 py-1 rounded text-xs font-bold">{formatTime(timeLeft.days)}d</span>
+          </>
+        )}
+
+        <span className="bg-elegant-800/50 px-2 py-1 rounded text-xs font-bold">{formatTime(timeLeft.hours)}h</span>
+
+        <span className="bg-elegant-800/50 px-2 py-1 rounded text-xs font-bold">{formatTime(timeLeft.minutes)}m</span>
+
+        {timeLeft.days === 0 && (
+          <span className="bg-elegant-800/50 px-2 py-1 rounded text-xs font-bold animate-pulse">
+            {formatTime(timeLeft.seconds)}s
+          </span>
+        )}
+      </div>
+
+      <span className="text-xs text-muted-foreground">{isComingSoon ? "until launch" : "remaining"}</span>
+    </div>
+  )
+}
