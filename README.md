@@ -1,6 +1,6 @@
 
 # Cantollege - College Canteen Ordering System
-## Deployed Link - https://v0-hackathon-work-23051434-9407s-projects.vercel.app
+## Deployed Link - https://v0-new-project-4r9sucgmilx.vercel.app/
 
 ## 🎯 **Project Overview**
 
