@@ -6,7 +6,7 @@ https://v0-hackathon-work-k166b7q2y-23051434-9407s-projects.vercel.app/?utm_medi
 ## 🎯 **Project Overview**
 
 A streamlined food ordering interface for college canteens that simplifies the ordering process without requiring login or payment integration. The system focuses on providing a smooth, intuitive experience from menu browsing to order tracking with exceptional UI/UX standards.
-Built under inter college hackathons.
+This project is built under inter college hackathons.
 
 ## 🍽️ **Core Features**
 
